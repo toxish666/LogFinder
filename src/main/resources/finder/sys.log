@@ -1,0 +1,59 @@
+Feb  8 07:42:15 Antons-MacBook-Pro GoogleSoftwareUpdateAgent[17021]: 2019-02-08 07:42:15.694 GoogleSoftwareUpdateAgent[17021/0x70000fc9d000] [lvl=2] -[KSUpdateCheckAction performAction] KSUpdateCheckAction running KSServerUpdateRequest: <KSOmahaServerUpdateRequest:0x7f888667bc60
+		server=<KSOmahaServer:0x7f8886404380>
+		url="https://tools.google.com/service/update2?cup2hreq=ccff76a9df6dc15162a3a4354ffd7a4a0ef969759a730d1fc8c27d1553311b39&cup2key=8:3062873849"
+		fallbackURLs=(
+			http://tools.google.com/service/update2?cup2hreq=ccff76a9df6dc15162a3a4354ffd7a4a0ef969759a730d1fc8c27d1553311b39&cup2key=8:1679544549
+		)
+		runningFetchers=0
+		tickets=1
+		body=0
+			<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+			<request protocol="3.0" version="KeystoneAgent-1.2.11.124" ismachine="0" requestid="{B67B3180-706C-42DD-ADA8-304B47CA068F}" dedup="cr" sessionid="{E96FBEE9-7C86-49E2-B89F-6BD154C3D760}">
+			    <os platform="mac" version="10.13" arch="x86_64h" sp="10.13.6_x86_64h"></os>
+			    <app appid="com.google.Keystone" version="1.2.11.124" cohort="1:0:ql9@0.0" cohortname="Everyone" lang="en-us" installage="217" installdate="4200" brand="GGLG" signed="1">
+			        <ping rd="4420" ad="4420" ping_freshness="{A134ED8B-046B-4BD3-86C0-87137EB350C3}"></ping>
+			        <updatecheck></updatecheck>
+			    </app>
+			</request>
+		headers={
+			"X-Goog-Update-Interactivity" = bg;
+		}
+	>
+
+Feb  8 07:42:15 Antons-MacBook-Pro GoogleSoftwareUpdateAgent[17021]: 2019-02-08 07:42:15.590 GoogleSoftwareUpdateAgent[17021/0x70000fc9d000] [lvl=2] -[KSEngineInvocation(KeystoneThread) performSelfUpdateWithEngine:error:] This process may be killed if self-update is necessary. In such cases, sub-processes may still be running to complete the self-update.
+Feb  8 07:42:15 Antons-MacBook-Pro GoogleSoftwareUpdateAgent[17021]: 2019-02-08 07:42:15.591 GoogleSoftwareUpdateAgent[17021/0x70000fc9d000] [lvl=2] -[KSEngineInvocation(KeystoneThread) updateProductWithProductID:usingEngine:error:] Checking for updates for "com.google.Keystone" using engine <KSUpdateEngine:0x7f8886469240
+		ticketStore=<KSPersistentTicketStore:0x7f888644ebe0 store=<KSKeyedPersistentStore:0x7f8886461080
+			path="/Users/aaa/Library/Google/GoogleSoftwareUpdate/TicketStore/Keystone.ticketstore"
+			lockFile=<KSLockFile:0x7f88864625d0
+				path="/Users/aaa/Library/Google/GoogleSoftwareUpdate/TicketStore/Keystone.ticketstore.lock"
+				resolvedPath="/Users/aaa/Library/Google/GoogleSoftwareUpdate/TicketStore/Keystone.ticketstore.lock"
+				shared=NO	fileSpecificLock=0x7f88864629b0>
+			keyType=NSString
+			valueTypes={(
+				KSTicket
+			)}
+		>>
+
+		Feb  8 07:42:07 Antons-MacBook-Pro com.apple.xpc.launchd[1] (org.jenkins-ci): Service only ran for 0 seconds. Pushing respawn out by 10 seconds.
+        Feb  8 07:42:15 Antons-MacBook-Pro GoogleSoftwareUpdateAgent[17021]: 2019-02-08 07:42:15.577 GoogleSoftwareUpdateAgent[17021/0x7fffa5c74380] [lvl=2] -[KSAgentApp(PrivateMethods) setUpLoggerOutputForVerboseMode:] Agent default/global settings: <KSAgentSettings:0x7f888644a890 bundleID=com.google.Keystone.Agent lastCheck=2019-02-07 17:24:31 +0000 lastServerCheck=2019-02-07 17:24:30 +0000 lastCheckStart=2019-02-07 17:24:29 +0000 checkInterval=18000.000000 uiDisplayInterval=604800.000000 sleepInterval=1800.000000 jitterInterval=900 maxRunInterval=0.000000 isConsoleUser=1 ticketStorePath=/Users/aaa/Library/Google/GoogleSoftwareUpdate/TicketStore/Keystone.ticketstore runMode=3 daemonUpdateEngineBrokerServiceName=com.google.Keystone.Daemon.UpdateEngine daemonAdministrationServiceName=com.google.Keystone.Daemon.Administration alwaysPromptForUpdates=0 lastUIDisplayed=(null) alwaysShowStatusItem=0 updateCheckTag=(null) printResults=NO userInitiated=NO>
+        Feb  8 07:42:15 Antons-MacBook-Pro GoogleSoftwareUpdateAgent[17021]: 2019-02-08 07:42:15.579 GoogleSoftwareUpdateAgent[17021/0x7fffa5c74380] [lvl=2] -[KSAgentApp(PrivateMethods) checkForUpdatesUsingArguments:snapshot:error:] Starting update check.
+        Feb  8 07:42:15 Antons-MacBook-Pro GoogleSoftwareUpdateAgent[17021]: 2019-02-08 07:42:15.581 GoogleSoftwareUpdateAgent[17021/0x70000fc9d000] [lvl=2] -[KSEngineInvocation(KeystoneThread) runKeystonesInThread] Starting engine thread
+        Feb  8 07:42:15 Antons-MacBook-Pro GoogleSoftwareUpdateAgent[17021]: 2019-02-08 07:42:15.587 GoogleSoftwareUpdateAgent[17021/0x70000fc9d000] [lvl=2] -[KSEngineInvocation(KeystoneThread) runKeystonesInThread] No functional system update engine detected. Only user tickets will be processed.
+        Feb  8 07:42:15 Antons-MacBook-Pro GoogleSoftwareUpdateAgent[17021]: 2019-02-08 07:42:15.590 GoogleSoftwareUpdateAgent[17021/0x70000fc9d000] [lvl=2] -[KSEngineInvocation(KeystoneThread) runKeystonesInThread] Checking with local engine: <KSUpdateEngine:0x7f8886469240
+        		ticketStore=<KSPersistentTicketStore:0x7f888644ebe0 store=<KSKeyedPersistentStore:0x7f8886461080
+        			path="/Users/aaa/Library/Google/GoogleSoftwareUpdate/TicketStore/Keystone.ticketstore"
+        			lockFile=<KSLockFile:0x7f88864625d0
+        				path="/Users/aaa/Library/Google/GoogleSoftwareUpdate/TicketStore/Keystone.ticketstore.lock"
+        				resolvedPath="/Users/aaa/Library/Google/GoogleSoftwareUpdate/TicketStore/Keystone.ticketstore.lock"
+        				shared=NO	fileSpecificLock=0x7f88864629b0>
+        			keyType=NSString
+        			valueTypes={(
+        				KSTicket
+        			)}
+        		>>
+        		processor=<KSActionProcessor:0x7f8886469440
+        			delegate=<KSUpdateEngine:0x7f8886469240>
+        			isProcessing=NO actionsCompleted=0 progress=0.00
+        			errors=0 currentActionErrors=0
+        			events=0 currentActionEvents=0
+        			actionQueue=( )
