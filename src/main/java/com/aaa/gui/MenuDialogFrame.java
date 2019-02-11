@@ -2,11 +2,13 @@ package com.aaa.gui;
 
 import com.aaa.finder.FinderCriteria;
 import com.aaa.finder.FinderStrategy;
+import com.aaa.ftp.FtpClient;
 
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import java.awt.*;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
@@ -184,8 +186,8 @@ class MenuDialogFrame extends JPanel {
                         if (!regexForPathRemoteFtp.matcher(pathTextField.getText()).matches())
                             throw new InvalidPathException(pathTextField.getText(), "Wrong path being given for local;\n " +
                                     "example: ftp://user:password@host/<url-path>");
-                    }
-
+                        testForFtpConnectionPossibility(pathTextField.getText().trim());
+                }
 
                 //ftp://aaa:212412@localhost/asdasd
                 folderpath = pathTextField.getText().trim();
@@ -195,9 +197,11 @@ class MenuDialogFrame extends JPanel {
                 ok = true;
                 dialog.setVisible(false);
             } catch (PatternSyntaxException patternexception) {
-                JOptionPane.showMessageDialog(MenuDialogFrame.this, "Wrong format being given: try log or txt");
+                JOptionPane.showMessageDialog(MenuDialogFrame.this, patternexception.getMessage());
             } catch (InvalidPathException pathexception){
                 JOptionPane.showMessageDialog(MenuDialogFrame.this, pathexception.getReason());
+            } catch (IOException ex){
+                JOptionPane.showMessageDialog(MenuDialogFrame.this, "Can't connect to remote server");
             }
         });
     }
@@ -221,6 +225,18 @@ class MenuDialogFrame extends JPanel {
         dialog.setVisible(true);
         return ok;
 
+    }
+
+
+
+
+    private void testForFtpConnectionPossibility(String ftpPath) throws IOException{
+        URL url = new URL(ftpPath);
+        String server = url.getHost();
+        String user = url.getUserInfo().split(":")[0];
+        String passwd = url.getUserInfo().split(":")[1];
+        FtpClient ftpClient = new FtpClient(server, 21, user, passwd);
+        ftpClient.open();
     }
 
 

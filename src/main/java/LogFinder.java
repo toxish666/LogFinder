@@ -3,7 +3,6 @@ import com.aaa.gui.MainFrame;
 import javax.swing.*;
 import java.awt.*;
 
-
 public class LogFinder {
 
     public static void main(String[] args){

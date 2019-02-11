@@ -133,4 +133,14 @@ public class FtpClient {
         ftp.completePendingCommand();
         return matchedStrings;
     }
+
+    public InputStream retreiveInputStream(Path path){
+        try {
+            return ftp.retrieveFileStream(path.toString());
+        }catch (IOException ex){
+            ex.printStackTrace();
+        }
+        //unreachable
+        return null;
+    }
 }

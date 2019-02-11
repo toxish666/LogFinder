@@ -51,6 +51,12 @@ public class FilesFoundRemotelyFtpTest {
         ftpClient.open();
     }
 
+    @After
+    public void teardown() throws IOException {
+        ftpClient.close();
+        fakeFtpServer.stop();
+    }
+
 
     @Test
     public void givenRemoteFileSystem_whenListingMatchingFiles_thenItIsContainedInList(){

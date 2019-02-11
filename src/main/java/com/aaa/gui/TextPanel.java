@@ -1,13 +1,15 @@
 package com.aaa.gui;
 
+import com.aaa.finder.FinderCriteria;
+import com.aaa.ftp.FtpClient;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
 public class TextPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
@@ -20,60 +22,19 @@ public class TextPanel extends javax.swing.JPanel {
     private final int numberOfMatchedString;
     private Integer cursorPosition=0;
 
-    public TextPanel(Pair<Path, List<Integer>> fileinfo, int numberOfMatchedString){
+    public TextPanel(Pair<Path, List<Integer>> fileinfo,
+                     int numberOfMatchedString,
+                     FinderCriteria finderCriteria,
+                     Optional<FtpClient> ftpClient){
         this.numberOfMatchedString = numberOfMatchedString;
         this.fileinfo = fileinfo;
 
         initComponents();
 
-        try {
-            BufferedReader in = new BufferedReader(new FileReader(fileinfo.getKey().toFile()));
-            String line = in.readLine();
-            while(line != null){
-                textArea.append(line + "\n");
-                line = in.readLine();
-            }
-        } catch (IOException ioexcept){
-            ioexcept.printStackTrace();
-        }
-
-        nextButton.addActionListener(a ->{
-            try {
-                if(++cursorPosition >= fileinfo.getValue().size() - 1)
-                    cursorPosition=0;
-                textArea.requestFocusInWindow();
-                textArea.requestFocus();
-                int endLine = fileinfo.getValue().get(cursorPosition);
-                int startLine = endLine - (numberOfMatchedString - 1);
-
-                textArea.select(textArea.getLineStartOffset(startLine), textArea.getLineEndOffset(endLine));
-
-            }catch (BadLocationException blex){
-                blex.printStackTrace();
-            }
-        });
-
-        previousButton.addActionListener(a ->{
-            try {
-                if(--cursorPosition < 0)
-                    cursorPosition=fileinfo.getValue().size();
-                textArea.requestFocusInWindow();
-                textArea.requestFocus();
-                int endLine = fileinfo.getValue().get(cursorPosition);
-                int startLine = endLine - (numberOfMatchedString - 1);
-
-                textArea.select(textArea.getLineStartOffset(startLine), textArea.getLineEndOffset(endLine));
-
-
-            }catch (BadLocationException blex){
-                blex.printStackTrace();
-            }
-        });
-
-
-        selectAllButton.addActionListener(a ->{
-            textArea.selectAll();
-        });
+        if(finderCriteria == FinderCriteria.LOCALL)
+            initComponentsForLocal();
+        else if (ftpClient.isPresent())
+           initComponentsForRemoteFtp(ftpClient.get());
     }
 
 
@@ -124,5 +85,78 @@ public class TextPanel extends javax.swing.JPanel {
                                 .addContainerGap())
         );
     }// </editor-fold>
+
+    private void initComponentsForLocal(){
+
+        try {
+            BufferedReader in = new BufferedReader(new FileReader(fileinfo.getKey().toFile()));
+            String line = in.readLine();
+            while(line != null){
+                textArea.append(line + "\n");
+                line = in.readLine();
+            }
+        } catch (IOException ioexcept){
+            ioexcept.printStackTrace();
+        }
+
+        initComponentsCommon();
+    }
+
+    private void initComponentsForRemoteFtp(FtpClient ftpClient){
+        try {
+            //get
+            Reader reader = new InputStreamReader(ftpClient.retreiveInputStream(fileinfo.getLeft()));
+
+            BufferedReader in = new BufferedReader(reader);
+            String line = in.readLine();
+            while(line != null){
+                textArea.append(line + "\n");
+                line = in.readLine();
+            }
+        } catch (IOException ioexcept){
+            ioexcept.printStackTrace();
+        }
+
+        initComponentsCommon();
+    }
+
+    private void initComponentsCommon(){
+        nextButton.addActionListener(a ->{
+            try {
+                if(++cursorPosition >= fileinfo.getValue().size() - 1)
+                    cursorPosition=0;
+                textArea.requestFocusInWindow();
+                textArea.requestFocus();
+                int endLine = fileinfo.getValue().get(cursorPosition);
+                int startLine = endLine - (numberOfMatchedString - 1);
+
+                textArea.select(textArea.getLineStartOffset(startLine), textArea.getLineEndOffset(endLine));
+
+            }catch (BadLocationException blex){
+                blex.printStackTrace();
+            }
+        });
+
+        previousButton.addActionListener(a ->{
+            try {
+                if(--cursorPosition < 0)
+                    cursorPosition=fileinfo.getValue().size() - 1;
+                textArea.requestFocusInWindow();
+                textArea.requestFocus();
+                int endLine = fileinfo.getValue().get(cursorPosition);
+                int startLine = endLine - (numberOfMatchedString - 1);
+
+                textArea.select(textArea.getLineStartOffset(startLine), textArea.getLineEndOffset(endLine));
+
+
+            }catch (BadLocationException blex){
+                blex.printStackTrace();
+            }
+        });
+
+        selectAllButton.addActionListener(a ->{
+            textArea.selectAll();
+        });
+    }
 
 }

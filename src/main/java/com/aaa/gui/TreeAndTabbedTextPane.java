@@ -10,12 +10,11 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,6 +35,8 @@ public class TreeAndTabbedTextPane extends javax.swing.JPanel {
     private Map<Path, List<Integer>> infoAboutFileSystem;
     private Map<String, DefaultMutableTreeNode> treeMap;
 
+    private Optional<FtpClient> ftpClient = Optional.empty();
+
     public TreeAndTabbedTextPane(String initpath, Pattern format, String textToSearch, FinderCriteria criteria){
         this.finderCriteria = criteria;
         this.initpath = initpath;
@@ -46,6 +47,8 @@ public class TreeAndTabbedTextPane extends javax.swing.JPanel {
         initComponents();
         buildFileSystemTree();
     }
+
+    public void test(){}
 
 
     private void initComponents() {
@@ -150,7 +153,9 @@ public class TreeAndTabbedTextPane extends javax.swing.JPanel {
                             List<Integer> listOfMatches = infoAboutFileSystem.get(Paths.get(given));
 
                             textTabbedPane.addTab(nameofnode, new TextPanel(Pair.of(Paths.get(given), listOfMatches),
-                                    textToFind.split("\\r?\\n").length));
+                                    textToFind.split("\\r?\\n").length,
+                                    finderCriteria,
+                                    ftpClient));
                         }
                     }
                 }
@@ -169,13 +174,16 @@ public class TreeAndTabbedTextPane extends javax.swing.JPanel {
                 finderStrategy = new FilesFoundLocally();
                 break;
             case FTP:
-                finderStrategy = new FilesFoundRemotelyFtp(extractFtpClientInfo(initpath));
+                FtpClient ftpClient = extractFtpClientInfo(initpath);
+                this.ftpClient = Optional.of(ftpClient);
+                finderStrategy = new FilesFoundRemotelyFtp(ftpClient);
                 break;
         }
         infoAboutFileSystem = finderStrategy.listAllMatchedFiles(Paths.get(initpath),format,textToFind);
     }
 
     private FtpClient extractFtpClientInfo(String ftpPath){
+        FtpClient ftpClient=null;
         String server=null;
         String pathToFind;
         String user=null;
@@ -187,10 +195,12 @@ public class TreeAndTabbedTextPane extends javax.swing.JPanel {
             user = url.getUserInfo().split(":")[0];
             passwd = url.getUserInfo().split(":")[1];
             initpath = pathToFind;
-        } catch (MalformedURLException ex){
+            ftpClient = new FtpClient(server, 21, user, passwd);
+            ftpClient.open();
+        } catch (IOException ex){
             ex.printStackTrace();
         }
-        return new FtpClient(server, 21, user, passwd);
+        return ftpClient;
     }
 
 }
